@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" fill="white" fill-opacity="0.01"/>
+  <!-- 4 Diagonal Rotor Arms -->
+  <path d="M11 11L19 19M37 37L29 29M37 11L29 19M11 37L19 29" stroke="#00f0ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Central Avionics Core -->
+  <rect x="19" y="19" width="10" height="10" rx="2" fill="#00f0ff" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 4 Symmetrical Rotor Guards (Clean 270° Circular Ducts) -->
+  <path d="M18 11C18 7.134 14.866 4 11 4C7.134 4 4 7.134 4 11C4 14.866 7.134 18 11 18 M30 11C30 7.134 33.134 4 37 4C40.866 4 44 7.134 44 11C44 14.866 40.866 18 37 18 M37 30C40.866 30 44 33.134 44 37C44 40.866 40.866 44 37 44C33.134 44 30 40.866 30 37 M11 30C7.134 30 4 33.134 4 37C4 40.866 7.134 44 11 44C14.866 44 18 40.866 18 37" stroke="#00f0ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

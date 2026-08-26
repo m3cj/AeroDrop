@@ -1,0 +1,64 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: aerodrop_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aerodrop
+      POSTGRES_USER: aerodrop
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-aerodrop_dev}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aerodrop"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: aerodrop_backend
+    restart: unless-stopped
+    network_mode: host  # Required for UDP MAVLink reception from host network
+    environment:
+      DATABASE_URL: postgresql+asyncpg://aerodrop:${POSTGRES_PASSWORD:-aerodrop_dev}@localhost:5432/aerodrop
+      WEATHER_API_KEY: ${WEATHER_API_KEY:-}
+      MAVLINK_CONNECTION: ${MAVLINK_CONNECTION:-udpin:0.0.0.0:14550}
+      MOCK_MODE: ${MOCK_MODE:-true}
+      JETSAN_HLS_URL: ${JETSAN_HLS_URL:-http://localhost:8554/stream.m3u8}
+      CORS_ORIGINS: '["http://localhost:5173","http://localhost:80"]'
+      DEBUG: ${DEBUG:-false}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+  # Uncomment when you have a real RTSP source
+  # jetsan:
+  #   image: bluenviron/mediamtx:latest
+  #   container_name: aerodrop_jetsan
+  #   restart: unless-stopped
+  #   network_mode: host
+  #   environment:
+  #     MTX_PATHS_CAM_SOURCE: ${RTSP_SOURCE:-rtsp://192.168.1.100:554/stream}
+  #   volumes:
+  #     - ./jetsan.yml:/mediamtx.yml
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: aerodrop_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
